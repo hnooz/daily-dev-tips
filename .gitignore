@@ -3,3 +3,9 @@ node_modules/
 .DS_Store
 site/dist/
 site/.astro/
+IDEA.md
+INSTRUCTIONS.md
+PROGRESS.md
+TODO.md
+DESIGN.md
+CODE_OF_CONDUCT.md
