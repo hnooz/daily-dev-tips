@@ -1,0 +1,105 @@
+---
+import "@fontsource-variable/ibm-plex-sans";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/ibm-plex-mono/600.css";
+import "@fontsource/ibm-plex-serif/400.css";
+import "@fontsource/ibm-plex-serif/400-italic.css";
+import "@fontsource/ibm-plex-serif/700.css";
+import "../styles/global.css";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  jsonLd?: object;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description = "One atomic developer tip per new tab. Community-curated, contributor-credited.",
+  canonical,
+  ogImage = "https://dailydevtip.dev/og-default.png",
+  ogType = "website",
+  jsonLd,
+  noIndex = false,
+} = Astro.props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="en" data-theme="auto">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noIndex && <meta name="robots" content="noindex" />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Daily Dev Tip" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {
+      jsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(jsonLd).replace(/<\/script>/gi, "<\\/script>")}
+        />
+      )
+    }
+
+    <!-- Theme: read from localStorage before paint to avoid flash -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("ddt-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.dataset.theme = stored;
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-bg text-fg font-sans antialiased min-h-screen flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-md"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Theme toggle script -->
+    <script>
+      document.addEventListener("click", (e) => {
+        const btn = (e.target as Element).closest("[data-theme-toggle]");
+        if (!btn) return;
+        const current = document.documentElement.dataset.theme ?? "auto";
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem("ddt-theme", next);
+      });
+    </script>
+  </body>
+</html>

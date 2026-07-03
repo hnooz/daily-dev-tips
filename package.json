@@ -1,0 +1,26 @@
+{
+  "name": "daily-dev-tips",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Community-curated atomic developer tips.",
+  "license": "MIT",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "assign-id": "node scripts/assign-id.mjs",
+    "build": "node scripts/build.mjs",
+    "lint": "eslint scripts/",
+    "lint:fix": "eslint scripts/ --fix",
+    "format": "prettier --write \"scripts/**/*.mjs\" \"*.json\" \"schemas/**/*.json\"",
+    "format:check": "prettier --check \"scripts/**/*.mjs\" \"*.json\" \"schemas/**/*.json\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "^9.28.0",
+    "gray-matter": "4.0.3",
+    "js-yaml": "4.1.0",
+    "prettier": "^3.5.3"
+  }
+}

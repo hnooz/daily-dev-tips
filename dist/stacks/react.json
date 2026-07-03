@@ -1,0 +1,115 @@
+{
+  "stack": "react",
+  "tips": [
+    {
+      "title": "Let the React Compiler memoize instead of hand-writing useMemo/useCallback",
+      "stack": "react",
+      "tags": [
+        "react19",
+        "react-compiler",
+        "performance",
+        "memoization"
+      ],
+      "language": "tsx",
+      "file": "app/components/ProductList.tsx",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://react.dev/learn/react-compiler",
+      "publishedAt": "2026-07-03",
+      "id": "react-0001",
+      "code": "// With the React Compiler enabled, this component is\n// auto-memoized — no useMemo/useCallback needed.\nfunction ProductList({ products, onSelect }: Props) {\n  const sorted = products\n    .slice()\n    .sort((a, b) => a.price - b.price)\n\n  return sorted.map((p) => (\n    <ProductCard key={p.id} product={p} onSelect={onSelect} />\n  ))\n}",
+      "explanation": "The React Compiler analyzes your components and automatically memoizes values and callbacks at build time, following the Rules of React. Once it's enabled, most manual `useMemo`/`useCallback` becomes redundant — and hand-memoizing on top of it adds noise without measurable benefit. Keep components pure and follow the rules so the compiler can do its job; reserve manual memoization for the rare case profiling proves the compiler missed.",
+      "codeHash": "0e5416b2d3bc5933"
+    },
+    {
+      "title": "Drop forwardRef in React 19 and accept ref as a normal prop",
+      "stack": "react",
+      "tags": [
+        "react19",
+        "refs",
+        "components",
+        "api"
+      ],
+      "language": "tsx",
+      "file": "app/components/Input.tsx",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://react.dev/blog/2024/12/05/react-19",
+      "publishedAt": "2026-07-03",
+      "id": "react-0002",
+      "code": "function Input({\n  ref,\n  ...props\n}: React.ComponentPropsWithRef<'input'>) {\n  return <input ref={ref} {...props} />\n}\n\n// no forwardRef wrapper needed\n<Input ref={inputRef} placeholder=\"Email\" />",
+      "explanation": "React 19 lets function components receive `ref` as a regular prop, so `forwardRef` is no longer required for the common case of exposing a DOM node. Fewer wrappers means cleaner component types and less indirection. `forwardRef` still works for backward compatibility, but new components should just declare `ref` in props. Use `React.ComponentPropsWithRef` to type the forwarded element's props correctly.",
+      "codeHash": "c3c2aca9586f94ad"
+    },
+    {
+      "title": "Handle form mutations with built-in pending and error state via useActionState",
+      "stack": "react",
+      "tags": [
+        "react19",
+        "forms",
+        "actions",
+        "state"
+      ],
+      "language": "tsx",
+      "file": "app/components/ContactForm.tsx",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://react.dev/reference/react/useActionState",
+      "publishedAt": "2026-07-03",
+      "id": "react-0003",
+      "code": "'use client'\nimport { useActionState } from 'react'\n\nconst [state, submitAction, pending] = useActionState(\n  async (_prev: State, formData: FormData) => {\n    const res = await sendMessage(formData)\n    return res.ok ? { ok: true } : { error: 'Failed' }\n  },\n  { ok: false },\n)\n\n<form action={submitAction}>\n  <button disabled={pending}>Send</button>\n  {state.error && <p>{state.error}</p>}\n</form>",
+      "explanation": "`useActionState` wraps an async action and returns the last result, the action to bind to a `<form action>`, and a `pending` flag — no manual `isSubmitting` state or try/catch bookkeeping. The reducer-style signature `(prevState, formData) => newState` keeps error and success handling in one place, and pending is managed by React across the transition. It's the React 19 replacement for the ad-hoc loading/error `useState` trio around form submits.",
+      "codeHash": "1457b16f2e98309a"
+    },
+    {
+      "title": "Read promises and context conditionally with the use() hook",
+      "stack": "react",
+      "tags": [
+        "react19",
+        "suspense",
+        "hooks",
+        "data-fetching"
+      ],
+      "language": "tsx",
+      "file": "app/components/UserProfile.tsx",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://react.dev/reference/react/use",
+      "publishedAt": "2026-07-03",
+      "id": "react-0004",
+      "code": "function UserProfile({ userPromise }: { userPromise: Promise<User> }) {\n  // suspends until resolved; unlike hooks, use() may be called\n  // conditionally and inside loops\n  const user = use(userPromise)\n  return <h1>{user.name}</h1>\n}\n\n// wrap the render in <Suspense fallback={...}>",
+      "explanation": "React 19's `use()` unwraps a promise or reads context, and unlike the Rules of Hooks it can be called conditionally or inside loops. For promises it integrates with Suspense: the component suspends until the promise resolves, so you skip manual loading state. Create the promise in a parent (Server Component or cache) and pass it down — don't create it inline in render, or you'll make a new promise every pass and never settle.",
+      "codeHash": "a938692726e3e270"
+    },
+    {
+      "title": "Show instant UI with useOptimistic and auto-revert on failure",
+      "stack": "react",
+      "tags": [
+        "react19",
+        "optimistic-ui",
+        "hooks",
+        "ux"
+      ],
+      "language": "tsx",
+      "file": "app/components/MessageList.tsx",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://react.dev/reference/react/useOptimistic",
+      "publishedAt": "2026-07-03",
+      "id": "react-0005",
+      "code": "'use client'\nimport { useOptimistic } from 'react'\n\nfunction MessageList({ messages }: { messages: Message[] }) {\n  const [optimistic, addOptimistic] = useOptimistic(\n    messages,\n    (state, text: string) => [...state, { text, pending: true }],\n  )\n\n  async function send(formData: FormData) {\n    const text = formData.get('text') as string\n    addOptimistic(text)          // renders immediately\n    await sendMessage(text)      // reverts automatically if this throws\n  }\n}",
+      "explanation": "`useOptimistic` renders an expected next state immediately while the real async action runs, then reconciles to the true state when it settles — reverting automatically if the action fails. It removes the manual \"add to list, roll back on error\" logic you'd otherwise write around every mutation. Mark optimistic entries (e.g. `pending: true`) so you can style them as in-flight. Pairs naturally with Actions and `useActionState`.",
+      "codeHash": "d1e37d1933b89417"
+    }
+  ]
+}

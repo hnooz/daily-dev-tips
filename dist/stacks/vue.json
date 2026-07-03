@@ -1,0 +1,115 @@
+{
+  "stack": "vue",
+  "tips": [
+    {
+      "title": "Replace modelValue/update boilerplate with defineModel() for v-model",
+      "stack": "vue",
+      "tags": [
+        "v-model",
+        "components",
+        "script-setup",
+        "two-way-binding"
+      ],
+      "language": "vue",
+      "file": "components/BaseInput.vue",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://vuejs.org/api/sfc-script-setup.html#definemodel",
+      "publishedAt": "2026-07-03",
+      "id": "vue-0001",
+      "code": "<script setup lang=\"ts\">\nconst model = defineModel<string>({ required: true })\n// modifiers + transformers also supported:\n// const [name, mods] = defineModel<string>({ set: (v) => v.trim() })\n</script>\n\n<template>\n  <input v-model=\"model\" />\n</template>",
+      "explanation": "`defineModel()` returns a writable ref wired to the parent's `v-model`, collapsing the `modelValue` prop plus `update:modelValue` emit into one line. Mutating the ref emits the update; the parent updating flows back in. It supports multiple models (`defineModel('first')`), required/default options, and a `set` transformer for normalizing input. This is the intended pattern for custom form controls in Vue 3.4+.",
+      "codeHash": "c9520d4d5afe98f5"
+    },
+    {
+      "title": "Cancel stale async work in watchers with onWatcherCleanup()",
+      "stack": "vue",
+      "tags": [
+        "watchers",
+        "async",
+        "reactivity",
+        "vue3.5"
+      ],
+      "language": "typescript",
+      "file": "composables/useUser.ts",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://vuejs.org/api/reactivity-core.html#onwatchercleanup",
+      "publishedAt": "2026-07-03",
+      "id": "vue-0002",
+      "code": "import { watch, onWatcherCleanup } from 'vue'\n\nwatch(id, (newId) => {\n  const controller = new AbortController()\n\n  fetch(`/api/users/${newId}`, { signal: controller.signal })\n    .then((r) => r.json())\n    .then((data) => { /* apply */ })\n\n  onWatcherCleanup(() => controller.abort())\n})",
+      "explanation": "Registered inside the watcher callback, `onWatcherCleanup` runs before the next invocation and on stop. It removes the manual \"is this response still relevant?\" flag most people hand-roll, and prevents a slow earlier request from overwriting the result of a newer one — the classic race in search-as-you-type. Pair it with `AbortController` for fetch, or use it to clear timers and subscriptions. Available in Vue 3.5+.",
+      "codeHash": "a608386aa1bb0546"
+    },
+    {
+      "title": "Destructure props with native defaults in Vue 3.5, but pass a getter to watch",
+      "stack": "vue",
+      "tags": [
+        "props",
+        "reactivity",
+        "script-setup",
+        "vue3.5"
+      ],
+      "language": "vue",
+      "file": "components/ProductCounter.vue",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://vuejs.org/guide/components/props.html#reactive-props-destructure",
+      "publishedAt": "2026-07-03",
+      "id": "vue-0003",
+      "code": "<script setup lang=\"ts\">\nimport { watch } from 'vue'\n\nconst { count = 0, label = 'Items' } = defineProps<{\n  count?: number\n  label?: string\n}>()\n\n// destructured props stay reactive on access, but watch needs a getter\nwatch(() => count, (n) => console.log('count changed', n))\n</script>",
+      "explanation": "Stabilized in 3.5: destructured variables from `defineProps` compile to `props.count` on access, so they stay reactive and defaults use plain JS syntax instead of `withDefaults`. The one trap: passing a destructured prop straight into `watch`, a `computed` dependency, or a composable loses reactivity because you're passing a value, not a source. Wrap it in a getter (`() => count`), and normalize composable inputs with `toValue()`.",
+      "codeHash": "89748b6a362954de"
+    },
+    {
+      "title": "Generate hydration-safe unique IDs with useId() for accessibility",
+      "stack": "vue",
+      "tags": [
+        "ssr",
+        "accessibility",
+        "vue3.5",
+        "forms"
+      ],
+      "language": "vue",
+      "file": "components/FormField.vue",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://vuejs.org/api/composition-api-helpers.html#useid",
+      "publishedAt": "2026-07-03",
+      "id": "vue-0004",
+      "code": "<script setup lang=\"ts\">\nimport { useId } from 'vue'\nconst id = useId()\n</script>\n\n<template>\n  <label :for=\"id\">Email</label>\n  <input :id=\"id\" type=\"email\" />\n</template>",
+      "explanation": "`useId()` produces IDs that are stable and identical across server render and client hydration, so `label`/`for` and `aria-describedby` wiring doesn't trigger a hydration mismatch. Hand-rolled counters or `Math.random()` diverge between environments and break both a11y and SSR. Call it once per component instance and reuse the value for all related elements. Available in Vue 3.5+.",
+      "codeHash": "d906729a755ad636"
+    },
+    {
+      "title": "Use useTemplateRef() for typed template refs instead of string-matched refs",
+      "stack": "vue",
+      "tags": [
+        "composition-api",
+        "refs",
+        "typescript",
+        "vue3.5"
+      ],
+      "language": "vue",
+      "file": "components/LoginForm.vue",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://vuejs.org/api/composition-api-helpers.html#usetemplateref",
+      "publishedAt": "2026-07-03",
+      "id": "vue-0005",
+      "code": "<script setup lang=\"ts\">\nimport { useTemplateRef, onMounted } from 'vue'\n\nconst input = useTemplateRef<HTMLInputElement>('email')\nonMounted(() => input.value?.focus())\n</script>\n\n<template>\n  <input ref=\"email\" type=\"email\" />\n</template>",
+      "explanation": "Vue 3.5 resolves template refs by key at runtime, so the type is inferred and you drop the `ref(null)` declaration that had to match the template name by convention. The old pattern silently returned `null` on a typo; `useTemplateRef` ties the binding to a string key you pass explicitly, and TypeScript knows the element type. Use it for focus management, measuring, and integrating non-Vue libraries against a DOM node.",
+      "codeHash": "4b71e52498a39fe4"
+    }
+  ]
+}

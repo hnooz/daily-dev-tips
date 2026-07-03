@@ -1,0 +1,146 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+---
+
+<BaseLayout
+  title={`Contribute — ${SITE_NAME}`}
+  description="How to submit an atomic developer tip to Daily Dev Tip."
+  canonical={`${SITE_URL}/contribute`}
+>
+  <div class="max-w-[720px] mx-auto px-6 py-12">
+    <h1 class="font-serif text-title text-fg mb-4">Contribute a tip</h1>
+    <p class="text-body text-fg-muted mb-10 leading-relaxed">
+      Your tip renders on every reader's new tab — with your name on it. That's the deal. One atomic
+      tip, one PR, permanent credit.
+    </p>
+
+    <!-- The 5 rules -->
+    <section class="mb-12">
+      <h2 class="font-serif text-subtitle text-fg mb-6">The editorial bar</h2>
+      <div class="space-y-4">
+        {
+          [
+            {
+              n: "1",
+              title: "Code first, explanation second",
+              desc: "Lead with the code block. Then explain the why — not the what, the why. The name is the what.",
+            },
+            {
+              n: "2",
+              title: "One idea per tip",
+              desc: "If you need two code blocks to explain it, it's two tips. Split them.",
+            },
+            {
+              n: "3",
+              title: "15 lines of code max. 600 chars of explanation max.",
+              desc: "If it doesn't fit, it's not atomic enough. Edit it down.",
+            },
+            {
+              n: "4",
+              title: "Teach the non-obvious",
+              desc: "If any mid-level dev would know this already, raise the bar. The best tips reveal hidden behavior or save a week of debugging.",
+            },
+            {
+              n: "5",
+              title: "Your GitHub handle is required",
+              desc: "No anonymous tips. That's the recognition contract — your name on the author card.",
+            },
+          ].map(({ n, title, desc }) => (
+            <div class="flex gap-4 p-5 rounded-xl border border-border-soft bg-modal-bg">
+              <div class="w-7 h-7 rounded-full bg-accent-soft text-accent font-mono text-xs font-semibold flex items-center justify-center shrink-0 mt-0.5">
+                {n}
+              </div>
+              <div>
+                <h3 class="font-medium text-fg mb-1">{title}</h3>
+                <p class="text-sm text-fg-muted leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Two ways -->
+    <section class="mb-12">
+      <h2 class="font-serif text-subtitle text-fg mb-6">Two ways to submit</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <a
+          href="https://github.com/hnooz/daily-dev-tips/issues/new?template=new-tip.yml"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-xl border border-border-soft bg-modal-bg hover:border-accent/40 hover:shadow-sm transition-all p-6"
+        >
+          <p class="font-medium text-fg mb-2">Open an Issue</p>
+          <p class="text-sm text-fg-muted leading-relaxed">
+            Fill in the GitHub issue form. A maintainer converts it to a PR. Easiest path.
+          </p>
+        </a>
+        <a
+          href="https://github.com/hnooz/daily-dev-tips"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-xl border border-border-soft bg-modal-bg hover:border-accent/40 hover:shadow-sm transition-all p-6"
+        >
+          <p class="font-medium text-fg mb-2">Open a PR</p>
+          <p class="text-sm text-fg-muted leading-relaxed">
+            Fork the repo, add your tip as a <code
+              class="font-mono text-xs bg-surface-soft px-1 py-0.5 rounded">.md</code
+            > file under <code class="font-mono text-xs bg-surface-soft px-1 py-0.5 rounded"
+              >tips/&lt;stack&gt;/</code
+            >, open a PR.
+          </p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Trust ladder -->
+    <section>
+      <h2 class="font-serif text-subtitle text-fg mb-6">Trust ladder</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-border-soft">
+              <th
+                class="text-left py-3 pr-6 text-xs font-semibold uppercase tracking-widest text-fg-subtle"
+                >Threshold</th
+              >
+              <th
+                class="text-left py-3 pr-6 text-xs font-semibold uppercase tracking-widest text-fg-subtle"
+                >Status</th
+              >
+              <th
+                class="text-left py-3 text-xs font-semibold uppercase tracking-widest text-fg-subtle"
+                >Permissions</th
+              >
+            </tr>
+          </thead>
+          <tbody>
+            {
+              [
+                { t: "1 merged PR", s: "Contributor", p: "Name in extension, GitHub credit" },
+                {
+                  t: "3 merged tips",
+                  s: "Founding contributor",
+                  p: "Highlighted in extension about page",
+                },
+                {
+                  t: "10 merged tips",
+                  s: "Stack curator candidate",
+                  p: "PR review rights for that stack",
+                },
+                { t: "20 merged + 6 mo active", s: "Co-maintainer", p: "Merge rights" },
+              ].map(({ t, s, p }) => (
+                <tr class="border-b border-border-soft">
+                  <td class="py-3 pr-6 font-mono text-xs text-fg">{t}</td>
+                  <td class="py-3 pr-6 text-fg-muted">{s}</td>
+                  <td class="py-3 text-fg-muted">{p}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,61 @@
+---
+import { codeToHtml } from "shiki";
+
+interface Props {
+  code: string;
+  language: string;
+  file?: string;
+}
+
+const { code, language, file } = Astro.props;
+
+const langMap: Record<string, string> = {
+  php: "php",
+  js: "javascript",
+  ts: "typescript",
+  python: "python",
+  go: "go",
+  bash: "bash",
+  vue: "vue",
+  text: "text",
+};
+
+const shikiLang = langMap[language] ?? "text";
+
+let highlighted = "";
+try {
+  highlighted = await codeToHtml(code, {
+    lang: shikiLang,
+    theme: "night-owl",
+  });
+} catch {
+  highlighted = `<pre><code>${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`;
+}
+---
+
+<div class="rounded-lg overflow-hidden bg-code-bg border-[0.5px] border-code-border">
+  <div class="flex items-center justify-between px-3.5 py-2.5 border-b-[0.5px] border-code-border">
+    <div class="flex items-center gap-2 min-w-0">
+      <span class="w-[7px] h-[7px] rounded-full bg-accent shrink-0" aria-hidden="true"></span>
+      {
+        file ? (
+          <span class="font-mono text-hint text-code-muted truncate">{file}</span>
+        ) : (
+          <span class="font-mono text-hint text-code-muted uppercase opacity-60">{language}</span>
+        )
+      }
+    </div>
+    {
+      file && (
+        <span class="font-mono text-hint text-code-muted uppercase opacity-60 shrink-0 ml-3">
+          {language}
+        </span>
+      )
+    }
+  </div>
+  <div
+    class="px-5 py-4 overflow-x-auto font-mono text-mono text-code-text leading-relaxed [&_pre]:!bg-transparent [&_pre]:!m-0 [&_code]:!bg-transparent"
+  >
+    <Fragment set:html={highlighted} />
+  </div>
+</div>

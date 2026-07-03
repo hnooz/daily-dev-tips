@@ -1,0 +1,95 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+const allTips = await getCollection("tips");
+const assigned = allTips.filter((e) => e.data.id);
+
+const contribMap = new Map<string, { name: string; count: number; stacks: Set<string> }>();
+for (const e of assigned) {
+  const { github, name } = e.data.author;
+  const stack = e.id.split("/")[0];
+  const existing = contribMap.get(github);
+  if (existing) {
+    existing.count++;
+    existing.stacks.add(stack);
+  } else {
+    contribMap.set(github, { name, count: 1, stacks: new Set([stack]) });
+  }
+}
+
+const contributors = [...contribMap.entries()]
+  .map(([github, { name, count, stacks }]) => ({
+    github,
+    name,
+    count,
+    stacks: [...stacks],
+  }))
+  .sort((a, b) => b.count - a.count);
+---
+
+<BaseLayout
+  title={`Contributors — ${SITE_NAME}`}
+  description="All contributors to Daily Dev Tip. Every merged tip earns permanent credit."
+  canonical={`${SITE_URL}/contributors`}
+>
+  <div class="max-w-[1200px] mx-auto px-6 py-12">
+    <p class="font-mono text-xs tracking-[0.14em] uppercase text-fg-subtle mb-3">The community</p>
+    <h1 class="font-serif text-title text-fg mb-2">Contributors</h1>
+    <p class="text-fg-muted mb-10">
+      {contributors.length} contributors · {assigned.length} tips merged
+    </p>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {
+        contributors.map(({ github, name, count, stacks }) => {
+          const initials = name
+            .split(" ")
+            .map((w: string) => w[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+          return (
+            <a
+              href={`/contributors/${github}`}
+              class="group block rounded-xl border-[0.5px] border-border-soft bg-modal-bg hover:border-accent/40 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-5"
+            >
+              <div class="flex items-center gap-3.5 mb-4">
+                <div
+                  class="w-12 h-12 rounded-full bg-accent text-white font-mono font-bold text-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200 shadow-[0_2px_10px_rgb(83_58_253/0.2)]"
+                >
+                  {initials}
+                </div>
+                <div class="min-w-0">
+                  <p class="font-mono font-semibold text-fg text-sm truncate group-hover:text-accent transition-colors">
+                    @{github}
+                  </p>
+                  <p class="text-xs text-fg-muted truncate mt-0.5">{name}</p>
+                </div>
+              </div>
+              <div class="h-px bg-border-soft mb-3"></div>
+              <div class="flex items-center justify-between text-xs text-fg-subtle font-mono">
+                <span>
+                  {count} tip{count !== 1 ? "s" : ""}
+                </span>
+                <span>{stacks.join(", ")}</span>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+
+    {
+      contributors.length === 0 && (
+        <p class="text-center text-fg-muted py-16">
+          No contributors yet.{" "}
+          <a href="/contribute" class="text-accent hover:underline">
+            Be the first!
+          </a>
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

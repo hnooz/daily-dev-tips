@@ -1,0 +1,115 @@
+{
+  "stack": "nuxt",
+  "tips": [
+    {
+      "title": "Cache expensive server routes at the edge with defineCachedEventHandler",
+      "stack": "nuxt",
+      "tags": [
+        "nuxt4",
+        "nitro",
+        "caching",
+        "performance"
+      ],
+      "language": "typescript",
+      "file": "server/api/stats.get.ts",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://nuxt.com/docs/guide/directory-structure/server",
+      "publishedAt": "2026-07-03",
+      "id": "nuxt-0001",
+      "code": "export default defineCachedEventHandler(\n  async (event) => {\n    return await computeExpensiveStats()\n  },\n  {\n    maxAge: 60,          // serve cached for 60s\n    staleMaxAge: 300,    // serve stale up to 5m while revalidating\n    getKey: (event) => getQuery(event).region as string,\n  },\n)",
+      "explanation": "Nitro's `defineCachedEventHandler` wraps a server route with stale-while-revalidate caching backed by your configured storage — no separate Redis wiring for the common case. `maxAge` controls freshness, `staleMaxAge` lets you serve slightly stale data instantly while recomputing in the background, and `getKey` scopes cache entries (e.g. per region or user tier). Ideal for aggregations and third-party calls that are expensive but tolerate short staleness.",
+      "codeHash": "be54b2f41b4e4f7d"
+    },
+    {
+      "title": "Set per-route rendering strategy with routeRules instead of restructuring code",
+      "stack": "nuxt",
+      "tags": [
+        "nuxt4",
+        "rendering",
+        "isr",
+        "architecture"
+      ],
+      "language": "typescript",
+      "file": "nuxt.config.ts",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://nuxt.com/docs/guide/concepts/rendering#hybrid-rendering",
+      "publishedAt": "2026-07-03",
+      "id": "nuxt-0002",
+      "code": "export default defineNuxtConfig({\n  routeRules: {\n    '/':          { prerender: true },        // static at build\n    '/blog/**':   { isr: 3600 },              // ISR, revalidate hourly\n    '/dashboard/**': { ssr: false },          // client-only SPA\n    '/api/**':    { cors: true },\n  },\n})",
+      "explanation": "`routeRules` applies a rendering mode per URL pattern in config, so marketing pages prerender, content pages use ISR, and authenticated app sections render client-side — all in one deployment without touching component code. This hybrid model lets you optimize each route for its actual traffic and freshness needs. Changing a strategy is a config edit, not a rewrite, which keeps rendering decisions reversible as requirements evolve.",
+      "codeHash": "d19be7f8182f8732"
+    },
+    {
+      "title": "Give useAsyncData an explicit key to control dedup and caching",
+      "stack": "nuxt",
+      "tags": [
+        "nuxt4",
+        "data-fetching",
+        "caching",
+        "ssr"
+      ],
+      "language": "vue",
+      "file": "pages/users/[id].vue",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://nuxt.com/docs/api/composables/use-async-data",
+      "publishedAt": "2026-07-03",
+      "id": "nuxt-0003",
+      "code": "<script setup lang=\"ts\">\nconst route = useRoute()\n\nconst { data: user } = await useAsyncData(\n  () => `user:${route.params.id}`,   // explicit, param-scoped key\n  () => $fetch(`/api/users/${route.params.id}`),\n  { watch: [() => route.params.id] },\n)\n</script>",
+      "explanation": "`useAsyncData` dedups and caches by key. Without an explicit key Nuxt derives one from the call site, which can collide when the same composable runs in multiple components or fail to refresh when a route param changes. A key tied to the actual inputs (here the user id) makes caching predictable, and `watch` re-runs the fetch when the param changes so navigating between `/users/1` and `/users/2` loads fresh data instead of showing stale cache.",
+      "codeHash": "4de269a4f04d568f"
+    },
+    {
+      "title": "Share state across components with useState, never a module-level ref, on SSR",
+      "stack": "nuxt",
+      "tags": [
+        "nuxt4",
+        "state",
+        "ssr",
+        "security"
+      ],
+      "language": "typescript",
+      "file": "composables/useCart.ts",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://nuxt.com/docs/api/composables/use-state",
+      "publishedAt": "2026-07-03",
+      "id": "nuxt-0004",
+      "code": "export const useCart = () =>\n  useState<CartItem[]>('cart', () => [])\n\n// DON'T do this in an SSR app:\n// const cart = ref<CartItem[]>([])  // shared across ALL requests\n// export const useCart = () => cart",
+      "explanation": "On the server a module-level `ref` is created once and shared by every request, so one user's cart can leak into another's response — a real data-isolation bug, not just a style issue. `useState` is request-scoped and SSR-friendly: each request gets its own instance, and the value is serialized into the payload so it survives hydration. Always reach for `useState` (keyed) for cross-component shared state in Nuxt.",
+      "codeHash": "f930ee0a6e08e635"
+    },
+    {
+      "title": "Use useFetch in setup and $fetch in handlers to avoid double-fetching",
+      "stack": "nuxt",
+      "tags": [
+        "nuxt4",
+        "data-fetching",
+        "ssr",
+        "performance"
+      ],
+      "language": "vue",
+      "file": "pages/products.vue",
+      "author": {
+        "github": "hnooz",
+        "name": "Mohamed Idris"
+      },
+      "source": "https://nuxt.com/docs/getting-started/data-fetching",
+      "publishedAt": "2026-07-03",
+      "id": "nuxt-0005",
+      "code": "<script setup lang=\"ts\">\n// SSR: fetched on the server, payload transferred to client — no refetch\nconst { data: products } = await useFetch('/api/products')\n\nasync function addToCart(id: string) {\n  // event handler: use $fetch directly, no SSR wrapping needed\n  await $fetch('/api/cart', { method: 'POST', body: { id } })\n}\n</script>",
+      "explanation": "`useFetch` is the SSR-aware wrapper: it runs during server render, serializes the result into the payload, and hydrates on the client without a second request. Calling `$fetch` at the top level of setup instead fetches once on the server and again on the client — a duplicate round trip. Rule of thumb: `useFetch`/`useAsyncData` for data your component needs to render; raw `$fetch` inside event handlers and actions where SSR dedup doesn't apply.",
+      "codeHash": "f6d9e6a26ccbd4f0"
+    }
+  ]
+}

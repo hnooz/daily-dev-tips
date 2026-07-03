@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tips/**'
+      - 'scripts/**'
+      - 'schemas/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Assign IDs to new tips
+        run: bun run assign-id
+
+      - name: Build dist/
+        run: bun run build
+
+      - name: Commit dist/ and updated tip files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/ tips/
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "chore: assign ids + rebuild dist [skip ci]"
+            git push
+          fi

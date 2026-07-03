@@ -1,0 +1,97 @@
+---
+import { getCollection } from "astro:content";
+import TipLayout from "@/layouts/TipLayout.astro";
+import TipCard from "@/components/TipCard.astro";
+import { parseTipBody } from "@/lib/parse-tip";
+import { SITE_URL, SITE_NAME } from "@/lib/seo";
+
+export async function getStaticPaths() {
+  const tips = await getCollection("tips");
+  return tips
+    .filter((e) => e.data.id) // only assigned tips
+    .map((e) => {
+      const [stack, file] = e.id.split("/");
+      const slug = file.replace(".md", "");
+      return {
+        params: { stack, slug },
+        props: { entry: e },
+      };
+    });
+}
+
+const { entry } = Astro.props;
+const [stack] = entry.id.split("/");
+const slug = entry.id.split("/")[1].replace(".md", "");
+const { code, language, explanation } = parseTipBody(entry.body ?? "", entry.data.language);
+
+const canonical = `${SITE_URL}/${stack}/${slug}`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: entry.data.title,
+  datePublished: new Date(entry.data.publishedAt).toISOString().slice(0, 10),
+  author: {
+    "@type": "Person",
+    name: entry.data.author.name,
+    url: `https://github.com/${entry.data.author.github}`,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+  proficiencyLevel: "Intermediate",
+  keywords: entry.data.tags.join(", "),
+};
+
+// related tips: same stack, excluding this tip, newest 3
+const allTips = await getCollection("tips");
+const related = allTips
+  .filter((e) => {
+    const [s] = e.id.split("/");
+    return s === stack && e.id !== entry.id && e.data.id;
+  })
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 3);
+---
+
+<TipLayout
+  title={entry.data.title}
+  stack={stack}
+  slug={slug}
+  tags={entry.data.tags}
+  language={language}
+  file={entry.data.file}
+  code={code}
+  explanation={explanation}
+  authorGithub={entry.data.author.github}
+  authorName={entry.data.author.name}
+  publishedAt={entry.data.publishedAt}
+  source={entry.data.source}
+  canonical={canonical}
+  jsonLd={jsonLd}
+>
+  <div slot="related" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+    {
+      related.map((r) => {
+        const [rStack] = r.id.split("/");
+        const rSlug = r.id.split("/")[1].replace(".md", "");
+        const { explanation: rExpl } = parseTipBody(r.body ?? "", r.data.language);
+        return (
+          <TipCard
+            id={r.data.id ?? r.id}
+            title={r.data.title}
+            stack={rStack}
+            slug={rSlug}
+            tags={r.data.tags}
+            explanation={rExpl}
+            authorName={r.data.author.name}
+            authorGithub={r.data.author.github}
+            publishedAt={r.data.publishedAt}
+          />
+        );
+      })
+    }
+  </div>
+</TipLayout>

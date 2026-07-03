@@ -1,0 +1,121 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import type { GetStaticPaths, Page } from "astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TipCard from "@/components/TipCard.astro";
+import { parseTipBody } from "@/lib/parse-tip";
+import { SITE_URL, SITE_NAME } from "@/lib/seo";
+import { stackLabel } from "@/lib/stacks";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const allTips = await getCollection("tips");
+  const stacks = [...new Set(allTips.map((e) => e.id.split("/")[0]))];
+  return stacks.flatMap((stack) => {
+    const tips = allTips
+      .filter((e) => e.id.split("/")[0] === stack && e.data.id)
+      .sort(
+        (a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime()
+      );
+    return paginate(tips, { params: { stack }, pageSize: 6 });
+  });
+};
+
+const { stack } = Astro.params;
+const page = Astro.props.page as Page<CollectionEntry<"tips">>;
+const label = stackLabel(stack ?? "");
+const canonical =
+  page.currentPage === 1 ? `${SITE_URL}/${stack}` : `${SITE_URL}/${stack}/${page.currentPage}`;
+---
+
+<BaseLayout
+  title={`${label} Tips${page.currentPage > 1 ? ` — Page ${page.currentPage}` : ""} — ${SITE_NAME}`}
+  description={`Browse ${page.total} atomic ${label} developer tips. Community-curated, contributor-credited.`}
+  canonical={canonical}
+>
+  <div class="max-w-[1200px] mx-auto px-6 py-12">
+    <div class="flex items-baseline justify-between mb-8">
+      <div>
+        <h1 class="font-serif text-title text-fg">{label} tips</h1>
+        <p class="text-fg-muted mt-1">{page.total} tips · newest first</p>
+      </div>
+      <a
+        href={`/${stack}/rss.xml`}
+        class="text-sm text-fg-subtle hover:text-accent transition-colors flex items-center gap-1.5"
+        aria-label={`RSS feed for ${label} tips`}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"
+          ></path>
+        </svg>
+        RSS
+      </a>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        page.data.map((e) => {
+          const slug = e.id.split("/")[1].replace(".md", "");
+          const { explanation } = parseTipBody(e.body ?? "", e.data.language);
+          return (
+            <TipCard
+              id={e.data.id ?? e.id}
+              title={e.data.title}
+              stack={stack}
+              slug={slug}
+              tags={e.data.tags}
+              explanation={explanation}
+              authorName={e.data.author.name}
+              authorGithub={e.data.author.github}
+              publishedAt={e.data.publishedAt}
+            />
+          );
+        })
+      }
+    </div>
+
+    {
+      page.lastPage > 1 && (
+        <nav class="flex items-center justify-center gap-5 mt-12" aria-label="Pagination">
+          {page.url.prev ? (
+            <a
+              href={page.url.prev}
+              class="text-sm font-semibold text-fg-subtle hover:text-accent transition-colors"
+              rel="prev"
+            >
+              &larr; Newer
+            </a>
+          ) : (
+            <span class="text-sm font-semibold text-fg-subtle opacity-40">&larr; Newer</span>
+          )}
+          <span class="text-sm font-mono text-fg-muted" style="font-feature-settings: 'tnum';">
+            {page.currentPage} / {page.lastPage}
+          </span>
+          {page.url.next ? (
+            <a
+              href={page.url.next}
+              class="text-sm font-semibold text-fg-subtle hover:text-accent transition-colors"
+              rel="next"
+            >
+              Older &rarr;
+            </a>
+          ) : (
+            <span class="text-sm font-semibold text-fg-subtle opacity-40">Older &rarr;</span>
+          )}
+        </nav>
+      )
+    }
+
+    {
+      page.total === 0 && (
+        <p class="text-center text-fg-muted py-16">
+          No tips yet.{" "}
+          <a href="/contribute" class="text-accent hover:underline">
+            Be the first to contribute!
+          </a>
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

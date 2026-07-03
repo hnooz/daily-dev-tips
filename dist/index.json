@@ -1,0 +1,272 @@
+[
+  {
+    "id": "go-0001",
+    "codeHash": "40e7e6176c0d1a30",
+    "title": "Unwrap errors type-safely with errors.AsType (Go 1.26)",
+    "stack": "go"
+  },
+  {
+    "id": "go-0002",
+    "codeHash": "cf997164497c4203",
+    "title": "Sandbox filesystem access to a directory with os.Root (Go 1.24)",
+    "stack": "go"
+  },
+  {
+    "id": "go-0003",
+    "codeHash": "1389640b05910b19",
+    "title": "Write custom iterators with range-over-func (Go 1.23+)",
+    "stack": "go"
+  },
+  {
+    "id": "go-0004",
+    "codeHash": "f559985b5bfbbd91",
+    "title": "Use b.Loop() for accurate benchmarks (Go 1.24)",
+    "stack": "go"
+  },
+  {
+    "id": "go-0005",
+    "codeHash": "c22d913f31dd736f",
+    "title": "Track tool dependencies in go.mod with tool directives (Go 1.24)",
+    "stack": "go"
+  },
+  {
+    "id": "laravel-0001",
+    "codeHash": "55ec3c8bd9398806",
+    "title": "Attach request-scoped metadata with the Context facade so it flows into logs and jobs",
+    "stack": "laravel"
+  },
+  {
+    "id": "laravel-0002",
+    "codeHash": "2bdc8f27261867bd",
+    "title": "Turn N+1 queries into errors in development with preventLazyLoading()",
+    "stack": "laravel"
+  },
+  {
+    "id": "laravel-0003",
+    "codeHash": "9239d245413918fd",
+    "title": "Lock down outbound HTTP in tests with preventStrayRequests()",
+    "stack": "laravel"
+  },
+  {
+    "id": "laravel-0004",
+    "codeHash": "5f376403fb4efd26",
+    "title": "Auto-delete stale records with the Prunable trait instead of a custom command",
+    "stack": "laravel"
+  },
+  {
+    "id": "laravel-0005",
+    "codeHash": "b03c11409b2f4439",
+    "title": "Use whenLoaded() in API resources to avoid firing queries during serialization",
+    "stack": "laravel"
+  },
+  {
+    "id": "nest-0001",
+    "codeHash": "6c82fca6ca88b3be",
+    "title": "Throw IntrinsicException for expected errors to skip Nest's auto-logger",
+    "stack": "nest"
+  },
+  {
+    "id": "nest-0002",
+    "codeHash": "f50e98e12932a79d",
+    "title": "Validate and convert date query params at the boundary with ParseDatePipe",
+    "stack": "nest"
+  },
+  {
+    "id": "nest-0003",
+    "codeHash": "1c5f9902fafa2121",
+    "title": "Skip the HTTP layer for workers and CLI with createApplicationContext()",
+    "stack": "nest"
+  },
+  {
+    "id": "nest-0004",
+    "codeHash": "51353b89ad7b0710",
+    "title": "Keep the SWC builder (default in Nest 11) for ~20x faster builds",
+    "stack": "nest"
+  },
+  {
+    "id": "nest-0005",
+    "codeHash": "58aefef9b90ea475",
+    "title": "Configure a strict global ValidationPipe to strip unknown fields and coerce DTOs",
+    "stack": "nest"
+  },
+  {
+    "id": "next-0001",
+    "codeHash": "00b084569a8e4637",
+    "title": "Push 'use client' to leaf components and pass server data down as props",
+    "stack": "next"
+  },
+  {
+    "id": "next-0002",
+    "codeHash": "0e60ef08b67745e8",
+    "title": "Remember GET route handlers are uncached by default since Next.js 15",
+    "stack": "next"
+  },
+  {
+    "id": "next-0003",
+    "codeHash": "92cb9e43d369f673",
+    "title": "Invalidate exactly what changed with revalidateTag/revalidatePath after writes",
+    "stack": "next"
+  },
+  {
+    "id": "next-0004",
+    "codeHash": "36105df6ac0525f9",
+    "title": "Use Server Actions for internal mutations instead of hand-rolled API routes",
+    "stack": "next"
+  },
+  {
+    "id": "next-0005",
+    "codeHash": "f2bd60a0e679a9b4",
+    "title": "Stream slow sections with loading.tsx and Suspense instead of blocking the route",
+    "stack": "next"
+  },
+  {
+    "id": "nuxt-0001",
+    "codeHash": "be54b2f41b4e4f7d",
+    "title": "Cache expensive server routes at the edge with defineCachedEventHandler",
+    "stack": "nuxt"
+  },
+  {
+    "id": "nuxt-0002",
+    "codeHash": "d19be7f8182f8732",
+    "title": "Set per-route rendering strategy with routeRules instead of restructuring code",
+    "stack": "nuxt"
+  },
+  {
+    "id": "nuxt-0003",
+    "codeHash": "4de269a4f04d568f",
+    "title": "Give useAsyncData an explicit key to control dedup and caching",
+    "stack": "nuxt"
+  },
+  {
+    "id": "nuxt-0004",
+    "codeHash": "f930ee0a6e08e635",
+    "title": "Share state across components with useState, never a module-level ref, on SSR",
+    "stack": "nuxt"
+  },
+  {
+    "id": "nuxt-0005",
+    "codeHash": "f6d9e6a26ccbd4f0",
+    "title": "Use useFetch in setup and $fetch in handlers to avoid double-fetching",
+    "stack": "nuxt"
+  },
+  {
+    "id": "php-0001",
+    "codeHash": "0ccf989089890485",
+    "title": "Prefer asymmetric visibility over readonly when a class mutates its own state",
+    "stack": "php"
+  },
+  {
+    "id": "php-0002",
+    "codeHash": "021bf01042530885",
+    "title": "Chain methods directly off constructors in PHP 8.4",
+    "stack": "php"
+  },
+  {
+    "id": "php-0003",
+    "codeHash": "3f7acbf5345de88d",
+    "title": "Add #[\\Override] in PHP 8.3 to catch broken method overrides at compile time",
+    "stack": "php"
+  },
+  {
+    "id": "php-0004",
+    "codeHash": "190f8d8ffa4872f4",
+    "title": "Use property hooks in PHP 8.4 to compute and validate without getter methods",
+    "stack": "php"
+  },
+  {
+    "id": "php-0005",
+    "codeHash": "8155bd3ef6072041",
+    "title": "Type your class constants in PHP 8.3 to lock the contract across subclasses",
+    "stack": "php"
+  },
+  {
+    "id": "react-0001",
+    "codeHash": "0e5416b2d3bc5933",
+    "title": "Let the React Compiler memoize instead of hand-writing useMemo/useCallback",
+    "stack": "react"
+  },
+  {
+    "id": "react-0002",
+    "codeHash": "c3c2aca9586f94ad",
+    "title": "Drop forwardRef in React 19 and accept ref as a normal prop",
+    "stack": "react"
+  },
+  {
+    "id": "react-0003",
+    "codeHash": "1457b16f2e98309a",
+    "title": "Handle form mutations with built-in pending and error state via useActionState",
+    "stack": "react"
+  },
+  {
+    "id": "react-0004",
+    "codeHash": "a938692726e3e270",
+    "title": "Read promises and context conditionally with the use() hook",
+    "stack": "react"
+  },
+  {
+    "id": "react-0005",
+    "codeHash": "d1e37d1933b89417",
+    "title": "Show instant UI with useOptimistic and auto-revert on failure",
+    "stack": "react"
+  },
+  {
+    "id": "rust-0001",
+    "codeHash": "f70d25e5d0b1ab1c",
+    "title": "Pass inline async handlers with async closures and the AsyncFn traits (Rust 1.85)",
+    "stack": "rust"
+  },
+  {
+    "id": "rust-0002",
+    "codeHash": "e36cffa00bf9e5ee",
+    "title": "Use native async fn in traits and drop the async-trait crate",
+    "stack": "rust"
+  },
+  {
+    "id": "rust-0003",
+    "codeHash": "4c95cda6b9836658",
+    "title": "Flatten guard clauses with let ... else",
+    "stack": "rust"
+  },
+  {
+    "id": "rust-0004",
+    "codeHash": "48ccf8592c595adc",
+    "title": "Future-proof public types with",
+    "stack": "rust"
+  },
+  {
+    "id": "rust-0005",
+    "codeHash": "d8b7d168f3d79abd",
+    "title": "Control impl Trait lifetime capture precisely with use<> (Rust 2024)",
+    "stack": "rust"
+  },
+  {
+    "id": "vue-0001",
+    "codeHash": "c9520d4d5afe98f5",
+    "title": "Replace modelValue/update boilerplate with defineModel() for v-model",
+    "stack": "vue"
+  },
+  {
+    "id": "vue-0002",
+    "codeHash": "a608386aa1bb0546",
+    "title": "Cancel stale async work in watchers with onWatcherCleanup()",
+    "stack": "vue"
+  },
+  {
+    "id": "vue-0003",
+    "codeHash": "89748b6a362954de",
+    "title": "Destructure props with native defaults in Vue 3.5, but pass a getter to watch",
+    "stack": "vue"
+  },
+  {
+    "id": "vue-0004",
+    "codeHash": "d906729a755ad636",
+    "title": "Generate hydration-safe unique IDs with useId() for accessibility",
+    "stack": "vue"
+  },
+  {
+    "id": "vue-0005",
+    "codeHash": "4b71e52498a39fe4",
+    "title": "Use useTemplateRef() for typed template refs instead of string-matched refs",
+    "stack": "vue"
+  }
+]

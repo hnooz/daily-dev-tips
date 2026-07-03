@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "updated": "2026-07-03T19:49:42.774Z",
+  "stacks": [
+    {
+      "id": "go",
+      "name": "Go",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "laravel",
+      "name": "Laravel",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "nest",
+      "name": "NestJS",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "next",
+      "name": "Next.js",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "nuxt",
+      "name": "Nuxt",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "php",
+      "name": "PHP",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "react",
+      "name": "React",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "rust",
+      "name": "Rust",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    },
+    {
+      "id": "vue",
+      "name": "Vue",
+      "tipCount": 5,
+      "updated": "2026-07-03"
+    }
+  ]
+}

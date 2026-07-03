@@ -1,0 +1,65 @@
+{
+  "go": [
+    "go-0001",
+    "go-0003",
+    "go-0005",
+    "go-0002",
+    "go-0004"
+  ],
+  "laravel": [
+    "laravel-0005",
+    "laravel-0004",
+    "laravel-0003",
+    "laravel-0001",
+    "laravel-0002"
+  ],
+  "nest": [
+    "nest-0003",
+    "nest-0002",
+    "nest-0005",
+    "nest-0001",
+    "nest-0004"
+  ],
+  "next": [
+    "next-0003",
+    "next-0002",
+    "next-0004",
+    "next-0005",
+    "next-0001"
+  ],
+  "nuxt": [
+    "nuxt-0005",
+    "nuxt-0004",
+    "nuxt-0002",
+    "nuxt-0001",
+    "nuxt-0003"
+  ],
+  "php": [
+    "php-0004",
+    "php-0002",
+    "php-0005",
+    "php-0001",
+    "php-0003"
+  ],
+  "react": [
+    "react-0003",
+    "react-0005",
+    "react-0004",
+    "react-0001",
+    "react-0002"
+  ],
+  "rust": [
+    "rust-0002",
+    "rust-0003",
+    "rust-0001",
+    "rust-0004",
+    "rust-0005"
+  ],
+  "vue": [
+    "vue-0003",
+    "vue-0004",
+    "vue-0002",
+    "vue-0001",
+    "vue-0005"
+  ]
+}

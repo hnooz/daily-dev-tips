@@ -1,0 +1,606 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* === Fonts === */
+  --font-sans: "IBM Plex Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "IBM Plex Serif", Georgia, serif;
+
+  /* === Brand (Stripe-inspired) === */
+  --color-primary: #533afd;
+  --color-primary-deep: #4434d4;
+  --color-primary-press: #2e2b8c;
+  --color-primary-soft: #665efd;
+  --color-primary-subdued: #b9b9f9;
+  --color-brand-dark: #1c1e54;
+  --color-ink: #0d253d;
+  --color-ink-secondary: #273951;
+  --color-ink-mute: #64748d;
+  --color-ink-mute-2: #61718a;
+  --color-on-primary: #ffffff;
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f6f9fc;
+  --color-canvas-cream: #f5e9d4;
+  --color-hairline: #e3e8ee;
+  --color-hairline-input: #a8c3de;
+
+  /* Gradient mesh stops */
+  --color-mesh-cream: #f5e9d4;
+  --color-mesh-orange: #f9a06b;
+  --color-mesh-lavender: #b9b9f9;
+  --color-mesh-magenta: #f96bee;
+  --color-mesh-ruby: #ea2261;
+
+  /* === Legacy compat for non-rebuilt components === */
+  --color-bg: #ffffff;
+  --color-fg: #0d253d;
+  --color-fg-muted: #64748d;
+  --color-fg-subtle: #61718a;
+  --color-accent: #533afd;
+  --color-accent-soft: rgb(83 58 253 / 0.08);
+  --color-accent-strong: rgb(83 58 253 / 0.16);
+  --color-surface-soft: #f6f9fc;
+  --color-surface-hover: #eef2f7;
+  --color-border-soft: #e3e8ee;
+  --color-border: #c9d5e0;
+  --color-divider: #e3e8ee;
+  --color-modal-bg: #ffffff;
+  --color-modal-border: #e3e8ee;
+
+  /* === Code block === */
+  --color-code-bg: #0d1117;
+  --color-code-border: rgb(255 255 255 / 0.07);
+  --color-code-text: #d6deeb;
+  --color-code-muted: rgb(255 255 255 / 0.5);
+  --color-tok-keyword: #c792ea;
+  --color-tok-function: #82aaff;
+  --color-tok-variable: #f07178;
+  --color-tok-string: #c3e88d;
+  --color-tok-punct: #89ddff;
+  --color-tok-comment: #6a6a85;
+  --color-success: #6fe5a5;
+
+  /* === Elevation (Stripe system) === */
+  --shadow-1: 0 1px 3px rgba(0, 55, 112, 0.08);
+  --shadow-2: 0 8px 24px rgba(0, 55, 112, 0.08), 0 2px 6px rgba(0, 55, 112, 0.04);
+  --shadow-3: 0 16px 48px rgba(0, 55, 112, 0.12), 0 4px 12px rgba(0, 55, 112, 0.06);
+  --shadow-card-hover: 0 8px 24px rgb(0 0 0 / 0.07), 0 2px 6px rgb(0 0 0 / 0.04);
+  --shadow-accent-glow: 0 4px 24px rgb(83 58 253 / 0.18);
+  --color-amber: #d4770c;
+
+  /* === Border radius (Stripe scale) === */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  /* === Type scale (DESIGN.md) === */
+  --text-display-xxl: 56px;
+  --text-display-xxl--line-height: 1.03;
+  --text-display-xl: 48px;
+  --text-display-xl--line-height: 1.15;
+  --text-display-lg: 32px;
+  --text-display-lg--line-height: 1.1;
+  --text-display-md: 26px;
+  --text-display-md--line-height: 1.12;
+  --text-heading-lg: 22px;
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-md: 20px;
+  --text-heading-md--line-height: 1.4;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 1.4;
+  --text-body-md: 15px;
+  --text-body-md--line-height: 1.4;
+  --text-caption: 13px;
+  --text-caption--line-height: 1.4;
+  --text-micro: 11px;
+  --text-micro--line-height: 1.4;
+  --text-micro-cap: 10px;
+  --text-micro-cap--line-height: 1.15;
+
+  /* Legacy type tokens */
+  --text-meta: 11px;
+  --text-meta--line-height: 1.2;
+  --text-hint: 12px;
+  --text-hint--line-height: 1.4;
+  --text-mono: 14px;
+  --text-mono--line-height: 1.55;
+  --text-handle: 15px;
+  --text-handle--line-height: 1.4;
+  --text-explanation: 17px;
+  --text-explanation--line-height: 1.65;
+  --text-title: 42px;
+  --text-title--line-height: 1.12;
+  --text-title--letter-spacing: -0.01em;
+  --text-subtitle: 24px;
+  --text-subtitle--line-height: 1.3;
+  --text-empty-title: 28px;
+  --text-empty-title--line-height: 1.2;
+  --text-title-lg: 52px;
+  --text-title-lg--line-height: 1.06;
+  --text-title-lg--letter-spacing: -0.02em;
+
+  /* === Animation === */
+  --animate-fade-in: ddt-fade-in 0.15s ease-out;
+  --animate-slide-up: ddt-slide-up 0.2s ease-out;
+  --animate-pulse-soft: ddt-pulse 1.5s ease-in-out infinite;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+
+@keyframes ddt-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ddt-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ddt-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes ddt-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-reveal default — GSAP fromTo overrides these explicitly */
+.gsap-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* ─── Marquee ─────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Gradient text ───────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #b9b9f9 0%, #f96bee 55%, #ea2261 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Dark hero mesh blobs (for dark #0c1220 bg) ─────── */
+.mesh-blob-dark {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.mesh-blob-dark-cream {
+  width: 700px;
+  height: 580px;
+  background: rgba(245, 233, 212, 0.28);
+  top: -200px;
+  left: -180px;
+}
+
+.mesh-blob-dark-magenta {
+  width: 520px;
+  height: 480px;
+  background: rgba(249, 107, 238, 0.22);
+  top: -100px;
+  left: 260px;
+}
+
+.mesh-blob-dark-lavender {
+  width: 620px;
+  height: 560px;
+  background: rgba(185, 185, 249, 0.30);
+  top: -220px;
+  left: 480px;
+}
+
+.mesh-blob-dark-indigo {
+  width: 500px;
+  height: 540px;
+  background: rgba(83, 58, 253, 0.35);
+  top: -150px;
+  left: 760px;
+}
+
+.mesh-blob-dark-ruby {
+  width: 420px;
+  height: 460px;
+  background: rgba(234, 34, 97, 0.22);
+  top: -80px;
+  left: 1060px;
+}
+
+
+/* ─── Base ───────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-feature-settings: "ss01";
+  }
+
+  body {
+    font-feature-settings: "ss01";
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  pre {
+    margin: 0;
+    background: transparent !important;
+  }
+}
+
+/* ─── Stripe design system components ────────────────────── */
+
+/* Gradient mesh backdrop */
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+}
+
+.mesh-blob-cream {
+  width: 640px;
+  height: 560px;
+  background: rgba(245, 233, 212, 0.85);
+  top: -140px;
+  left: -80px;
+}
+
+.mesh-blob-orange {
+  width: 480px;
+  height: 420px;
+  background: rgba(249, 160, 107, 0.45);
+  top: -100px;
+  left: 200px;
+}
+
+.mesh-blob-lavender {
+  width: 560px;
+  height: 520px;
+  background: rgba(185, 185, 249, 0.65);
+  top: -180px;
+  left: 440px;
+}
+
+.mesh-blob-indigo {
+  width: 460px;
+  height: 500px;
+  background: rgba(83, 58, 253, 0.28);
+  top: -120px;
+  left: 720px;
+}
+
+.mesh-blob-ruby {
+  width: 380px;
+  height: 420px;
+  background: rgba(234, 34, 97, 0.22);
+  top: -80px;
+  left: 980px;
+}
+
+/* Pill buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-deep);
+}
+
+.btn-primary:active {
+  background: var(--color-primary-press);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-primary);
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-secondary:hover {
+  background: rgba(83, 58, 253, 0.05);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--color-ink-mute);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-ghost:hover {
+  color: var(--color-ink);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Eyebrow pill tag */
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(185, 185, 249, 0.35);
+  color: var(--color-primary-deep);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+/* Feature card */
+.card-feature {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 24px;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-feature:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+/* Stack card with colored left border */
+.card-stack {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-left-width: 3px;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  display: block;
+}
+
+.card-stack:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+/* Tip card */
+.card-tip {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 18px;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  display: block;
+}
+
+.card-tip:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+/* Browser mockup chrome */
+.browser-mockup {
+  background: var(--color-canvas);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-3);
+  overflow: hidden;
+  border: 1px solid var(--color-hairline);
+}
+
+.browser-chrome {
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.browser-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.browser-bar {
+  flex: 1;
+  background: var(--color-canvas);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+}
+
+/* Stat item */
+.stat-num {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.8px;
+  color: var(--color-ink);
+  font-feature-settings: "tnum", "ss01";
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--color-ink-mute);
+  margin-top: 4px;
+  letter-spacing: -0.2px;
+}
+
+/* Step number circle */
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-center: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 16px;
+  font-feature-settings: "tnum";
+}
+
+/* Dark CTA band */
+.band-dark {
+  background: var(--color-brand-dark);
+  color: var(--color-on-primary);
+}
+
+/* Contributor avatar */
+.contrib-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(83, 58, 253, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contrib-card:hover .contrib-avatar {
+  transform: scale(1.06);
+  box-shadow: 0 4px 16px rgba(83, 58, 253, 0.35);
+}
+
+/* ─── Filter pills ───────────────────────────────────────── */
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-canvas);
+  color: var(--color-ink-mute);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  box-shadow: var(--shadow-1);
+  line-height: 1;
+}
+
+.filter-pill:hover {
+  border-color: var(--pill-color, var(--color-primary));
+  color: var(--pill-color, var(--color-primary));
+}
+
+.filter-pill.active {
+  background: var(--pill-color, var(--color-primary));
+  border-color: var(--pill-color, var(--color-primary));
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.tip-item {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tip-item[data-hidden] {
+  display: none;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .ddt-enter,
+  .ddt-enter-1,
+  .ddt-enter-2,
+  .ddt-enter-3,
+  .ddt-enter-4,
+  .ddt-enter-5,
+  .gsap-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

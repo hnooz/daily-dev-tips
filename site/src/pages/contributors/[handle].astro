@@ -1,0 +1,108 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TipCard from "@/components/TipCard.astro";
+import { parseTipBody } from "@/lib/parse-tip";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export async function getStaticPaths() {
+  const allTips = await getCollection("tips");
+  const assigned = allTips.filter((e) => e.data.id);
+
+  const handles = new Set(assigned.map((e) => e.data.author.github));
+  return [...handles].map((handle) => {
+    const tips = assigned
+      .filter((e) => e.data.author.github === handle)
+      .sort(
+        (a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime()
+      );
+    const { name } = tips[0].data.author;
+    const stacks = [...new Set(tips.map((e) => e.id.split("/")[0]))];
+    const memberSince = [...tips].sort(
+      (a, b) => new Date(a.data.publishedAt).getTime() - new Date(b.data.publishedAt).getTime()
+    )[0].data.publishedAt;
+    return { params: { handle }, props: { handle, name, tips, stacks, memberSince } };
+  });
+}
+
+const { handle, name, tips, stacks, memberSince } = Astro.props;
+const initials = name
+  .split(" ")
+  .map((w: string) => w[0])
+  .join("")
+  .toUpperCase()
+  .slice(0, 2);
+const since = new Date(memberSince).toLocaleDateString("en-US", { year: "numeric", month: "long" });
+---
+
+<BaseLayout
+  title={`@${handle} — ${SITE_NAME}`}
+  description={`${name} has contributed ${tips.length} tip${tips.length !== 1 ? "s" : ""} to Daily Dev Tip.`}
+  canonical={`${SITE_URL}/contributors/${handle}`}
+>
+  <div class="max-w-[900px] mx-auto px-6 py-12">
+    <!-- Author header -->
+    <div class="flex items-start gap-6 mb-12 pb-8 border-b border-border-soft">
+      <div
+        class="w-16 h-16 rounded-full bg-accent-soft text-accent font-mono font-semibold text-xl flex items-center justify-center shrink-0"
+      >
+        {initials}
+      </div>
+      <div class="flex-1 min-w-0">
+        <h1 class="font-serif text-title text-fg mb-1">{name}</h1>
+        <p class="font-mono text-fg-muted text-sm mb-3">@{handle}</p>
+        <div class="flex flex-wrap gap-4 text-sm text-fg-muted mb-4">
+          <span>{tips.length} tip{tips.length !== 1 ? "s" : ""} merged</span>
+          <span>·</span>
+          <span>{stacks.join(", ")}</span>
+          <span>·</span>
+          <span>member since {since}</span>
+        </div>
+        <a
+          href={`https://github.com/${handle}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-sm text-accent hover:underline"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          github.com/{handle}
+        </a>
+      </div>
+    </div>
+
+    <h2 class="font-serif text-subtitle text-fg mb-6">Tips by @{handle}</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        tips.map((e) => {
+          const stack = e.id.split("/")[0];
+          const slug = e.id.split("/")[1].replace(".md", "");
+          const { explanation } = parseTipBody(e.body ?? "", e.data.language);
+          return (
+            <TipCard
+              id={e.data.id ?? e.id}
+              title={e.data.title}
+              stack={stack}
+              slug={slug}
+              tags={e.data.tags}
+              explanation={explanation}
+              authorName={e.data.author.name}
+              authorGithub={e.data.author.github}
+              publishedAt={e.data.publishedAt}
+            />
+          );
+        })
+      }
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-border-soft">
+      <p class="text-sm text-fg-muted">
+        Want to contribute?{" "}
+        <a href="/contribute" class="text-accent hover:underline">Submit a tip →</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>

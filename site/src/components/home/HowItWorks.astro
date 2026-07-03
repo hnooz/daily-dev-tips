@@ -1,0 +1,95 @@
+---
+const steps = [
+  {
+    n: "01",
+    title: "Write a tip",
+    desc: "Open a PR with your atomic tip — code block first, explanation, your GitHub handle. Human-authored. Human-reviewed.",
+    color: "#533afd",
+  },
+  {
+    n: "02",
+    title: "Get reviewed & merged",
+    desc: "Maintainer reviews for clarity. CI validates the schema, checks for duplicates, assigns a permanent tip ID.",
+    color: "#f96bee",
+  },
+  {
+    n: "03",
+    title: "Your name, every new tab",
+    desc: "Thousands of developers see your author card. Your credit is permanent — not just a like, a page view for life.",
+    color: "#ea2261",
+  },
+];
+---
+
+<section class="bg-canvas py-16 md:py-[100px]">
+  <div class="max-w-[1200px] mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="max-w-[560px] mb-10 md:mb-[64px]" data-reveal>
+      <span class="eyebrow-pill mb-4">How it works</span>
+      <h2 class="font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.08] tracking-[-0.03em] text-ink mt-4 mb-[14px]">
+        Write once.<br />Seen by thousands.
+      </h2>
+      <p class="text-[16px] font-semibold text-ink-mute leading-[1.6]">
+        Merge one tip and your name appears on every reader's new tab — permanently.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid sm:grid-cols-3 gap-6" data-reveal-group>
+      {steps.map(({ n, title, desc, color }) => (
+        <div
+          style={`
+            position: relative;
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-hairline);
+            background: var(--color-canvas);
+            box-shadow: var(--shadow-1);
+            overflow: hidden;
+          `}
+          class="card-feature"
+        >
+          <!-- Ghost step number -->
+          <span
+            aria-hidden="true"
+            style={`
+              position: absolute;
+              top: -12px;
+              right: 16px;
+              font-family: var(--font-serif);
+              font-size: 96px;
+              font-weight: 700;
+              color: ${color};
+              opacity: 0.05;
+              line-height: 1;
+              letter-spacing: -4px;
+              pointer-events: none;
+              user-select: none;
+            `}
+          >{n}</span>
+
+          <div style={`width: 28px; height: 28px; border-radius: 50%; background: ${color}; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;`}>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: white; font-weight: 600;">{n}</span>
+          </div>
+
+          <h3
+            style="
+              font-size: 18px;
+              font-weight: 600;
+              letter-spacing: -0.25px;
+              color: var(--color-ink);
+              margin-bottom: 10px;
+              line-height: 1.3;
+            "
+          >
+            {title}
+          </h3>
+          <p style="font-size: 14px; font-weight: 600; color: var(--color-ink-mute); line-height: 1.6;">
+            {desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dailydevtip.dev/sitemap-index.xml

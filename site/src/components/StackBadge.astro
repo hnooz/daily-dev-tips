@@ -1,0 +1,25 @@
+---
+interface Props {
+  stack: string;
+  size?: "sm" | "md";
+}
+
+const { stack, size = "md" } = Astro.props;
+
+const LABELS: Record<string, string> = { nest: "NESTJS", node: "NODE.JS" };
+const label = LABELS[stack] ?? stack.toUpperCase();
+
+const sizeClass =
+  size === "sm"
+    ? "text-[10px] px-2 py-0.5 tracking-[0.1em]"
+    : "text-[11px] px-2.5 py-1 tracking-[0.12em]";
+---
+
+<span
+  class:list={[
+    "inline-block rounded-full font-mono font-semibold bg-primary/8 text-primary border border-primary/20",
+    sizeClass,
+  ]}
+>
+  {label}
+</span>
