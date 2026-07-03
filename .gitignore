@@ -1,11 +1,15 @@
 node_modules/
 *.log
 .DS_Store
+.env
 site/dist/
 site/.astro/
+dist
 IDEA.md
 INSTRUCTIONS.md
 PROGRESS.md
 TODO.md
 DESIGN.md
 CODE_OF_CONDUCT.md
+CLAUDE.md
+DEPLOY.md
