@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+const sections = [
+  {
+    title: "What we collect",
+    body: "Nothing. The extension has no telemetry, no analytics, no tracking, and no third-party scripts. It sends no data back to us — there is no server to send it to.",
+  },
+  {
+    title: "What stays on your device",
+    body: "The extension stores your stack preferences, a rotation counter, and a cached tip pool in Chrome's local extension storage. A per-tab tip pin lives in session storage and is cleared when the browser closes. None of this ever leaves your device, and uninstalling the extension deletes all of it.",
+  },
+  {
+    title: "Network requests",
+    body: "The extension makes exactly one kind of network request: fetching the public tips JSON from cdn.jsdelivr.net. Like any CDN, jsDelivr sees the standard connection metadata (your IP address) required to serve the file — see the jsDelivr privacy policy. If the CDN is unreachable, the extension falls back to a bundled offline copy and makes no request at all.",
+  },
+  {
+    title: "Permissions, justified",
+    body: "storage — to keep your preferences and tip rotation on your device. tabs — used only for chrome.tabs.getCurrent(), so a refreshed tab shows the same tip instead of skipping ahead. Host access is limited to cdn.jsdelivr.net. No activeTab, no browsing-history access, no content scripts on any website.",
+  },
+  {
+    title: "This website",
+    body: "dailydevtip.dev is a static site. No cookies, no analytics, no tracking pixels, no third-party fonts or scripts.",
+  },
+  {
+    title: "Contributor attribution",
+    body: "Tips are contributed through public GitHub pull requests. The GitHub handle a contributor puts in their tip's frontmatter is published in the tips dataset and shown on the author card — that attribution is the point of the project. It is public information the contributor submitted, governed by GitHub's own terms.",
+  },
+  {
+    title: "Changes and contact",
+    body: "If this policy changes, the change lands as a public commit in the open-source repository — the history is auditable. Questions: open an issue on GitHub.",
+  },
+];
+---
+
+<BaseLayout
+  title={`Privacy — ${SITE_NAME}`}
+  description="Daily Dev Tip collects nothing. No telemetry, no analytics, no tracking — everything stays on your device."
+  canonical={`${SITE_URL}/privacy`}
+>
+  <div class="max-w-[720px] mx-auto px-6 py-12">
+    <h1 class="font-serif text-title text-fg mb-4">Privacy policy</h1>
+    <p class="text-body text-fg-muted mb-2 leading-relaxed">
+      The short version: we collect nothing. The extension shows a tip on your new tab and sends
+      nothing back.
+    </p>
+    <p class="text-sm text-fg-subtle mb-10">Last updated: July 5, 2026</p>
+
+    <div class="space-y-4">
+      {
+        sections.map(({ title, body }) => (
+          <section class="p-5 rounded-xl border border-border-soft bg-modal-bg">
+            <h2 class="font-medium text-fg mb-1">{title}</h2>
+            <p class="text-sm text-fg-muted leading-relaxed">{body}</p>
+          </section>
+        ))
+      }
+    </div>
+
+    <p class="text-sm text-fg-muted leading-relaxed mt-10">
+      Everything above is verifiable: the extension and this site are open source at{" "}
+      <a
+        href="https://github.com/hnooz/daily-dev-tips"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-accent hover:underline">github.com/hnooz/daily-dev-tips</a
+      >. jsDelivr's privacy policy is at{" "}
+      <a
+        href="https://www.jsdelivr.com/terms/privacy-policy"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-accent hover:underline">jsdelivr.com/terms/privacy-policy</a
+      >.
+    </p>
+  </div>
+</BaseLayout>

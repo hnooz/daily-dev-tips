@@ -9,11 +9,12 @@ const footerLinks = {
     { href: "https://github.com/hnooz/daily-dev-tips", label: "GitHub", external: true },
     { href: "/rss.xml", label: "RSS feed" },
   ],
+  Legal: [{ href: "/privacy", label: "Privacy" }],
 };
 ---
 
 <footer class="bg-canvas border-t border-hairline">
-  <div class="max-w-[1200px] mx-auto px-6 pt-10 pb-8 sm:pt-14 sm:pb-10 grid gap-8 grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+  <div class="max-w-[1200px] mx-auto px-6 pt-10 pb-8 sm:pt-14 sm:pb-10 grid gap-8 grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
 
     <!-- Brand -->
     <div class="col-span-2 lg:col-span-1">
@@ -64,6 +65,14 @@ const footerLinks = {
   <!-- Bottom bar -->
   <div class="border-t border-hairline px-6 py-4 max-w-[1200px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-0">
     <span class="text-[12px] font-semibold text-ink-mute">MIT License · Open source</span>
-    <span class="text-[12px] font-semibold text-ink-mute">Built with Astro + Tailwind</span>
+    <span class="text-[12px] font-semibold text-ink-mute">
+      Made with <span aria-hidden="true">&hearts;</span> by{" "}
+      <a
+        href="https://github.com/hnooz"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-ink-mute no-underline transition-colors hover:text-ink">Mohamed Idris</a
+      >
+    </span>
   </div>
 </footer>

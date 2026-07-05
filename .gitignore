@@ -4,7 +4,7 @@ node_modules/
 .env
 site/dist/
 site/.astro/
-dist
+dist/
 IDEA.md
 INSTRUCTIONS.md
 PROGRESS.md

@@ -5,7 +5,7 @@
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![jsDelivr hits](https://data.jsdelivr.com/v1/package/gh/hnooz/daily-dev-tips/badge)](https://www.jsdelivr.com/package/gh/hnooz/daily-dev-tips)
 
-A community-curated knowledge base of atomic developer tips, delivered through a browser-extension new-tab page and a public site at **[dailydevtip.dev](https://dailydevtip.dev)**. Each new tab shows one bite-sized tip — code first, short explanation, and the contributor's GitHub handle. Your handle renders in every reader's new tab: that recognition loop is the engine, not a side feature.
+A community-curated knowledge base of atomic developer tips, delivered through a browser-extension new-tab page and a public site at **[dailydevtip.dev](https://dailydevtips.mohammededris23.workers.dev/)**. Each new tab shows one bite-sized tip — code first, short explanation, and the contributor's GitHub handle. Your handle renders in every reader's new tab: that recognition loop is the engine, not a side feature.
 
 - **Zero backend.** GitHub is the platform: tips are Markdown PRs, moderation is PR review, attribution is commit history, the CDN is jsDelivr. Cost $0.
 - **No telemetry, no tracking, no accounts.** Every tip is human-authored and human-reviewed.
