@@ -34,4 +34,5 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           workingDirectory: site
+          wranglerVersion: "4.107.0"
           command: deploy
