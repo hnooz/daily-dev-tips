@@ -2,12 +2,16 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: "https://dailydevtip.dev",
   integrations: [sitemap()],
+
   vite: {
     plugins: [tailwindcss()],
   },
+
   markdown: {
     shikiConfig: {
       themes: {
@@ -16,4 +20,6 @@ export default defineConfig({
       },
     },
   },
+
+  adapter: cloudflare(),
 });
