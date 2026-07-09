@@ -4,6 +4,7 @@ import TipLayout from "@/layouts/TipLayout.astro";
 import TipCard from "@/components/TipCard.astro";
 import { parseTipBody } from "@/lib/parse-tip";
 import { SITE_URL, SITE_NAME } from "@/lib/seo";
+import { stackLabel } from "@/lib/stacks";
 
 export async function getStaticPaths() {
   const tips = await getCollection("tips");
@@ -26,34 +27,64 @@ const { code, language, explanation } = parseTipBody(entry.body ?? "", entry.dat
 
 const canonical = `${SITE_URL}/${stack}/${slug}`;
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  headline: entry.data.title,
-  datePublished: new Date(entry.data.publishedAt).toISOString().slice(0, 10),
-  author: {
-    "@type": "Person",
-    name: entry.data.author.name,
-    url: `https://github.com/${entry.data.author.github}`,
+const datePublished = new Date(entry.data.publishedAt).toISOString().slice(0, 10);
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: entry.data.title,
+    description: explanation.slice(0, 300),
+    url: canonical,
+    inLanguage: "en",
+    datePublished,
+    dateModified: datePublished,
+    author: {
+      "@type": "Person",
+      name: entry.data.author.name,
+      url: `https://github.com/${entry.data.author.github}`,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    proficiencyLevel: "Intermediate",
+    keywords: entry.data.tags.join(", "),
   },
-  publisher: {
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: stackLabel(stack),
+        item: new URL(`/${stack}`, SITE_URL).toString(),
+      },
+      { "@type": "ListItem", position: 3, name: entry.data.title, item: canonical },
+    ],
   },
-  proficiencyLevel: "Intermediate",
-  keywords: entry.data.tags.join(", "),
-};
+];
 
-// related tips: same stack, excluding this tip, newest 3
+// related tips: same stack first, then cross-stack tips sharing tags, newest first
 const allTips = await getCollection("tips");
+const tagSet = new Set(entry.data.tags);
 const related = allTips
-  .filter((e) => {
+  .filter((e) => e.id !== entry.id && e.data.id)
+  .map((e) => {
     const [s] = e.id.split("/");
-    return s === stack && e.id !== entry.id && e.data.id;
+    const sharedTags = e.data.tags.filter((t) => tagSet.has(t)).length;
+    return { e, score: (s === stack ? 2 : 0) + sharedTags };
   })
-  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
-  .slice(0, 3);
+  .filter(({ score }) => score > 0)
+  .sort(
+    (a, b) =>
+      b.score - a.score ||
+      new Date(b.e.data.publishedAt).getTime() - new Date(a.e.data.publishedAt).getTime()
+  )
+  .slice(0, 3)
+  .map(({ e }) => e);
 ---
 
 <TipLayout

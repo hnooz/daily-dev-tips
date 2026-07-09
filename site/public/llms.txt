@@ -1,0 +1,18 @@
+# Daily Dev Tip
+
+> One atomic developer tip per new tab. Community-curated, human-authored, contributor-credited. Each tip is a code snippet (max 15 lines) plus a short explanation of the why.
+
+## Tips
+
+- [RSS feed (all tips)](/rss.xml): newest tips across all stacks
+- Per-stack pages: /laravel, /vue, /react, /next, /nuxt, /nest, /php, /go, /rust — each with its own RSS at /<stack>/rss.xml
+- Every tip page contains the full code and explanation at /<stack>/<slug>
+
+## Contributing
+
+- [How to contribute](/contribute): tips are submitted via GitHub pull requests and reviewed by humans
+- [Contributors](/contributors): every tip is credited to its author
+
+## Policy
+
+All tips are human-authored and human-reviewed. Content is open source (MIT) at https://github.com/hnooz/daily-dev-tips. Attribution to the contributor and a link back to the tip page is appreciated when citing.

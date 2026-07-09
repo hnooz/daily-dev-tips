@@ -9,6 +9,7 @@ import "@fontsource/ibm-plex-serif/700.css";
 import "../styles/global.css";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import { SITE_URL } from "@/lib/seo";
 
 interface Props {
   title: string;
@@ -18,16 +19,18 @@ interface Props {
   ogType?: string;
   jsonLd?: object;
   noIndex?: boolean;
+  rssFeed?: { href: string; title: string };
 }
 
 const {
   title,
   description = "One atomic developer tip per new tab. Community-curated, contributor-credited.",
   canonical,
-  ogImage = "https://dailydevtip.dev/og-default.png",
+  ogImage = new URL("/social/og.png", SITE_URL).toString(),
   ogType = "website",
   jsonLd,
   noIndex = false,
+  rssFeed,
 } = Astro.props;
 
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
@@ -47,16 +50,24 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Daily Dev Tip" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={new URL("/social/twitter.png", SITE_URL).toString()} />
+    <meta name="twitter:image:alt" content="Daily Dev Tip — one atomic dev tip, every new tab" />
+
+    <!-- Feeds -->
+    <link rel="alternate" type="application/rss+xml" title="Daily Dev Tip" href="/rss.xml" />
+    {rssFeed && <link rel="alternate" type="application/rss+xml" title={rssFeed.title} href={rssFeed.href} />}
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/social/apple-touch-icon.png" />
 
     {
       jsonLd && (

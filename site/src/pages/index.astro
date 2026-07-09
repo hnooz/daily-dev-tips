@@ -34,12 +34,22 @@ const totalStacks   = [...new Set(assigned.map((e) => e.id.split("/")[0]))].leng
 
 // derive unique stack names for search placeholder
 const allStackNames = [...new Set(assigned.map((e) => e.id.split("/")[0]))].sort();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+};
 ---
 
 <BaseLayout
   title={`${SITE_NAME} — One tip per tab`}
   description={SITE_DESCRIPTION}
   canonical={SITE_URL}
+  jsonLd={jsonLd}
 >
   <HeroSection totalTips={totalTips} totalContribs={totalContribs} totalStacks={totalStacks} />
   <HowItWorks />

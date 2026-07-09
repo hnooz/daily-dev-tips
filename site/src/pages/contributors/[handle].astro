@@ -33,12 +33,25 @@ const initials = name
   .toUpperCase()
   .slice(0, 2);
 const since = new Date(memberSince).toLocaleDateString("en-US", { year: "numeric", month: "long" });
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name,
+    alternateName: `@${handle}`,
+    url: `https://github.com/${handle}`,
+    knowsAbout: stacks,
+  },
+};
 ---
 
 <BaseLayout
   title={`@${handle} — ${SITE_NAME}`}
   description={`${name} has contributed ${tips.length} tip${tips.length !== 1 ? "s" : ""} to Daily Dev Tip.`}
-  canonical={`${SITE_URL}/contributors/${handle}`}
+  canonical={new URL(`/contributors/${handle}`, SITE_URL).toString()}
+  jsonLd={jsonLd}
 >
   <div class="max-w-[900px] mx-auto px-6 py-12">
     <!-- Author header -->

@@ -1,14 +1,14 @@
-export const SITE_URL = "https://dailydevtip.dev";
+export const SITE_URL = "https://dailydevtips.mohammededris23.workers.dev/";
 export const SITE_NAME = "Daily Dev Tip";
 export const SITE_DESCRIPTION =
   "One atomic developer tip per new tab. Community-curated, contributor-credited.";
 
 export function tipUrl(stack: string, slug: string): string {
-  return `${SITE_URL}/${stack}/${slug}`;
+  return new URL(`/${stack}/${slug}`, SITE_URL).toString();
 }
 
-export function ogUrl(stack: string, slug: string): string {
-  return `${SITE_URL}/og/${stack}/${slug}.png`;
+export function ogUrl(stack: string): string {
+  return new URL(`/og/${stack}.png`, SITE_URL).toString();
 }
 
 export function truncate(text: string, max: number): string {

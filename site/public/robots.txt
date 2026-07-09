@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dailydevtip.dev/sitemap-index.xml
+Sitemap: https://dailydevtips.mohammededris23.workers.dev/sitemap-index.xml

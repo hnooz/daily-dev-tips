@@ -41,7 +41,7 @@ const {
 } = Astro.props;
 
 const description = truncate(plainText(explanation), 155);
-const ogImage = ogUrl(stack, slug);
+const ogImage = ogUrl(stack);
 const dateObj = new Date(publishedAt);
 const dateIso = dateObj.toISOString().slice(0, 10);
 const date = dateObj.toLocaleDateString("en-US", {
