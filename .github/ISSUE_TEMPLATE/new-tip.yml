@@ -10,27 +10,37 @@ body:
         One tip = one idea. Code block first, explanation second. 15 lines of code max. 600 chars of explanation max.
 
   - type: dropdown
-    id: stack
+    id: category
     attributes:
-      label: Stack
+      label: Category
       options:
-        - laravel
-        - vue
-        - nest
+        - frontend
+        - backend
+        - fullstack
+        - mobile
+        - devops
+        - database
+        - testing
+        - tooling
+        - other
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
+    id: stack
+    attributes:
+      label: Stack
+      description: "The specific framework or technology, lowercase, hyphenated (e.g. laravel, vue, react, rust, go). Existing stacks live under tips/ — new ones are welcome."
+      placeholder: "laravel"
+    validations:
+      required: true
+
+  - type: input
     id: language
     attributes:
       label: Language
-      options:
-        - php
-        - js
-        - ts
-        - python
-        - go
-        - bash
+      description: "Language of the code block, lowercase (e.g. php, js, ts, python, go, rust, bash)."
+      placeholder: "php"
     validations:
       required: true
 
