@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-10T21:15:11.019Z",
+  "updated": "2026-07-10T21:20:24.286Z",
   "stacks": [
     {
       "id": "go",
@@ -41,7 +41,7 @@
     {
       "id": "react",
       "name": "React",
-      "tipCount": 5,
+      "tipCount": 6,
       "updated": "2026-07-10"
     },
     {

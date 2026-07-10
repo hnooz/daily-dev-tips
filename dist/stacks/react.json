@@ -2,6 +2,28 @@
   "stack": "react",
   "tips": [
     {
+      "title": "The stale closure, your debounced callback saves old state",
+      "stack": "react",
+      "tags": [
+        "react19",
+        "debounce",
+        "performance",
+        "js"
+      ],
+      "language": "jsx",
+      "file": null,
+      "author": {
+        "github": "DevDhaif",
+        "name": "Dhaifallah Ahmed"
+      },
+      "source": null,
+      "publishedAt": "2026-07-11",
+      "id": "react-0006",
+      "code": "function useDebouncedCallback(callback, delay) {\n  const latest = useRef(callback);\n  useEffect(() => {\n    latest.current = callback; // refresh every render\n  });\n  return useMemo(() => {\n    let t;\n    return (...args) => {\n      clearTimeout(t);\n      t = setTimeout(() => latest.current(...args), delay); // fresh closure\n    };\n  }, [delay]);\n}\nconst saveDraft = useDebouncedCallback(() => api.save(form), 800);\n// form is current when the timer fires, not the mount-time value",
+      "explanation": "Stabilizing a debounce with `useMemo(() => debounce(fn, 300), [])` fixes one bug and creates a **worse** one: the callback is frozen at mount, so it captures the initial state *forever*.\n\n**Classic symptom** → debounced autosave that saves an empty form.\n\n**The fix: the latest-ref pattern.**\n- The debounced shell stays stable, so timers survive re-renders\n- It calls through a ref that always points at the newest closure",
+      "codeHash": "f6a037508e0e5a72"
+    },
+    {
       "title": "Let the React Compiler memoize instead of hand-writing useMemo/useCallback",
       "stack": "react",
       "tags": [

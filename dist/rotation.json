@@ -42,11 +42,12 @@
     "php-0003"
   ],
   "react": [
+    "react-0006",
+    "react-0002",
     "react-0003",
-    "react-0005",
     "react-0004",
     "react-0001",
-    "react-0002"
+    "react-0005"
   ],
   "rust": [
     "rust-0002",
