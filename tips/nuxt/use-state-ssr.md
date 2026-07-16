@@ -13,6 +13,7 @@ author:
   name: Mohamed Idris
 source: https://nuxt.com/docs/api/composables/use-state
 publishedAt: 2026-07-03
+id: nuxt-0001
 ---
 
 ```typescript

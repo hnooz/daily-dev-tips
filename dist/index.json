@@ -30,6 +30,12 @@
     "stack": "nest"
   },
   {
+    "id": "nuxt-0001",
+    "codeHash": "f930ee0a6e08e635",
+    "title": "Share state across components with useState, never a module-level ref, on SSR",
+    "stack": "nuxt"
+  },
+  {
     "id": "react-0006",
     "codeHash": "f6a037508e0e5a72",
     "title": "The stale closure, your debounced callback saves old state",
