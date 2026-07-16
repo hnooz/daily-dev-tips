@@ -2,28 +2,6 @@
   "stack": "nest",
   "tips": [
     {
-      "title": "Throw IntrinsicException for expected errors to skip Nest's auto-logger",
-      "stack": "nest",
-      "tags": [
-        "nestjs11",
-        "exceptions",
-        "logging",
-        "clean-logs"
-      ],
-      "language": "typescript",
-      "file": "src/users/users.service.ts",
-      "author": {
-        "github": "hnooz",
-        "name": "Mohamed Idris"
-      },
-      "source": "https://docs.nestjs.com/exception-filters",
-      "publishedAt": "2026-07-03",
-      "id": "nest-0001",
-      "code": "import { IntrinsicException } from '@nestjs/common';\n\n@Injectable()\nexport class UsersService {\n  async findOrFail(id: string) {\n    const user = await this.repo.findOne({ where: { id } });\n    if (!user) {\n      // control-flow error: don't pollute logs with a stack trace\n      throw new IntrinsicException('User not found');\n    }\n    return user;\n  }\n}",
-      "explanation": "NestJS 11 added `IntrinsicException`: throwing it bypasses the framework's automatic error logging while still propagating through the normal exception pipeline. Expected, control-flow errors (not found, validation) don't deserve a logged stack trace on every occurrence — that noise buries the errors that actually matter. Use it for anticipated failures; let genuinely unexpected exceptions log normally so you keep signal in your logs.",
-      "codeHash": "6c82fca6ca88b3be"
-    },
-    {
       "title": "Validate and convert date query params at the boundary with ParseDatePipe",
       "stack": "nest",
       "tags": [
@@ -44,50 +22,6 @@
       "code": "@Get()\nasync find(\n  @Query('from', new ParseDatePipe()) from: Date,\n  @Query('to', new ParseDatePipe({ optional: true })) to?: Date,\n) {\n  return this.reports.between(from, to);\n}",
       "explanation": "NestJS 11 ships `ParseDatePipe`, which validates an incoming date string and hands your handler a real `Date`. Parsing dates inside the method mixes transport concerns with business logic and scatters the same `new Date()` + `isNaN` check everywhere. A pipe enforces the shape at the edge: bad input is rejected with a 400 before your code runs, and the handler signature honestly reflects that it receives a `Date`.",
       "codeHash": "f50e98e12932a79d"
-    },
-    {
-      "title": "Skip the HTTP layer for workers and CLI with createApplicationContext()",
-      "stack": "nest",
-      "tags": [
-        "nestjs",
-        "workers",
-        "cli",
-        "dependency-injection"
-      ],
-      "language": "typescript",
-      "file": "src/worker.ts",
-      "author": {
-        "github": "hnooz",
-        "name": "Mohamed Idris"
-      },
-      "source": "https://docs.nestjs.com/standalone-applications",
-      "publishedAt": "2026-07-03",
-      "id": "nest-0003",
-      "code": "import { NestFactory } from '@nestjs/core';\nimport { AppModule } from './app.module';\nimport { ReportService } from './reports/report.service';\n\nasync function bootstrap() {\n  const app = await NestFactory.createApplicationContext(AppModule);\n  const reports = app.get(ReportService);\n  await reports.generateDaily();\n  await app.close();\n}\nbootstrap();",
-      "explanation": "`createApplicationContext()` boots the DI container without starting an HTTP server. For cron jobs, queue consumers, and one-off CLI scripts you get every provider, guard-free, with no wasted listener or port. It's the right entry point for anything that isn't serving requests — you keep Nest's module structure and injection while avoiding the overhead and surface area of a web server you never use.",
-      "codeHash": "1c5f9902fafa2121"
-    },
-    {
-      "title": "Keep the SWC builder (default in Nest 11) for ~20x faster builds",
-      "stack": "nest",
-      "tags": [
-        "nestjs11",
-        "build",
-        "swc",
-        "developer-experience"
-      ],
-      "language": "json",
-      "file": "nest-cli.json",
-      "author": {
-        "github": "hnooz",
-        "name": "Mohamed Idris"
-      },
-      "source": "https://docs.nestjs.com/recipes/swc",
-      "publishedAt": "2026-07-03",
-      "id": "nest-0004",
-      "code": "{\n  \"compilerOptions\": {\n    \"builder\": \"swc\",\n    \"typeCheck\": true\n  }\n}",
-      "explanation": "Nest 11 defaults to the Rust-based SWC compiler, which is dramatically faster than `tsc` for builds and dev restarts. SWC transpiles but does not type-check, so enable `typeCheck: true` to run type checking in parallel and keep your safety net. Only fall back to the `tsc` builder if a plugin you depend on relies on the TypeScript compiler API (some transformers do). For most apps, staying on SWC is the right call.",
-      "codeHash": "51353b89ad7b0710"
     },
     {
       "title": "Configure a strict global ValidationPipe to strip unknown fields and coerce DTOs",
