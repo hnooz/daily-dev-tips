@@ -8,6 +8,9 @@
     "nest-0005",
     "nest-0002"
   ],
+  "nuxt": [
+    "nuxt-0001"
+  ],
   "react": [
     "react-0006",
     "react-0003"

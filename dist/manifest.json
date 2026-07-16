@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-16T17:34:12.433Z",
+  "updated": "2026-07-16T16:03:28.586Z",
   "stacks": [
     {
       "id": "laravel",
@@ -12,6 +12,12 @@
       "id": "nest",
       "name": "NestJS",
       "tipCount": 2,
+      "updated": "2026-07-16"
+    },
+    {
+      "id": "nuxt",
+      "name": "Nuxt",
+      "tipCount": 1,
       "updated": "2026-07-16"
     },
     {
