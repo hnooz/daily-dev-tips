@@ -1,36 +1,42 @@
 {
   "version": 1,
-  "updated": "2026-07-16T16:03:28.586Z",
+  "updated": "2026-07-19T07:41:35.036Z",
   "stacks": [
+    {
+      "id": "flutter",
+      "name": "Flutter",
+      "tipCount": 1,
+      "updated": "2026-07-19"
+    },
     {
       "id": "laravel",
       "name": "Laravel",
       "tipCount": 3,
-      "updated": "2026-07-16"
+      "updated": "2026-07-19"
     },
     {
       "id": "nest",
       "name": "NestJS",
       "tipCount": 2,
-      "updated": "2026-07-16"
+      "updated": "2026-07-19"
     },
     {
       "id": "nuxt",
       "name": "Nuxt",
       "tipCount": 1,
-      "updated": "2026-07-16"
+      "updated": "2026-07-19"
     },
     {
       "id": "react",
       "name": "React",
       "tipCount": 2,
-      "updated": "2026-07-16"
+      "updated": "2026-07-19"
     },
     {
       "id": "vue",
       "name": "Vue",
       "tipCount": 3,
-      "updated": "2026-07-16"
+      "updated": "2026-07-19"
     }
   ]
 }

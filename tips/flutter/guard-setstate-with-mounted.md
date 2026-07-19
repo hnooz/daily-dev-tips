@@ -13,6 +13,7 @@ author:
   name: Ahmed Ibrahim
 source: https://api.flutter.dev/flutter/widgets/State/mounted.html
 publishedAt: 2026-07-19
+id: flutter-0001
 ---
 
 ```dart

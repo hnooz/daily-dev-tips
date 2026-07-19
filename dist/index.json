@@ -1,5 +1,11 @@
 [
   {
+    "id": "flutter-0001",
+    "codeHash": "51858afa042aef36",
+    "title": "Guard setState with mounted after an await, or it throws on a popped route",
+    "stack": "flutter"
+  },
+  {
     "id": "laravel-0002",
     "codeHash": "2bdc8f27261867bd",
     "title": "Turn N+1 queries into errors in development with preventLazyLoading()",
