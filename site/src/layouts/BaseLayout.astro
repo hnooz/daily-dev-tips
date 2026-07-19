@@ -7,6 +7,7 @@ import "@fontsource/ibm-plex-serif/400.css";
 import "@fontsource/ibm-plex-serif/400-italic.css";
 import "@fontsource/ibm-plex-serif/700.css";
 import "../styles/global.css";
+import Analytics from "@vercel/analytics/astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE_URL } from "@/lib/seo";
@@ -97,6 +98,8 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
         }
       })();
     </script>
+
+    <Analytics />
   </head>
   <body class="bg-bg text-fg font-sans antialiased min-h-screen flex flex-col">
     <a
